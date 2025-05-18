@@ -1,0 +1,62 @@
+@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+html,
+body,
+#root {
+  height: 100dvh;
+}
+
+:root {
+  /* COLORS */
+  --clr-orange-300: #ffab6a;
+  --clr-orange-500: #ff7e1b;
+
+  --clr-grey-50: #f6f8fd;
+  --clr-grey-100: #e4e9f2;
+  --clr-grey-300: #c3cad9;
+  --clr-grey-500: #69707d;
+  --clr-grey-950: #1d2026;
+}
+
+/* BOOTSTRAP OVERRIDES */
+.carousel-control-next,
+.carousel-control-prev {
+  opacity: 1;
+}
+
+.carousel-control-next {
+  right: 10px;
+}
+
+.carousel-control-prev {
+  left: 10px;
+}
+
+.carousel-control-next-icon {
+  background-color: white;
+  color: black;
+  opacity: 1;
+  background-image: url('/images/chevron-right.svg');
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  padding: 12px;
+  width: 40px;
+  height: 40px;
+  background-size: 30%;
+  flex-shrink: 0;
+}
+
+.carousel-control-prev-icon {
+  background-color: white;
+  color: black;
+  opacity: 1;
+  background-image: url('/images/chevron-left.svg');
+  background-repeat: no-repeat;
+  border-radius: 50%;
+  padding: 12px;
+  width: 40px;
+  height: 40px;
+  background-size: 30%;
+  flex-shrink: 0;
+}
