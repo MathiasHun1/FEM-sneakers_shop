@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -5,128 +6,161 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
+import Popper from '@mui/material/Popper';
+import { ClickAwayListener } from '@mui/material';
 
 import logo from '/images/logo.svg';
 
 const pages = ['Collections', 'Men', 'Women', 'About', 'Contant'];
 
 function Header({ itemsCount }: { itemsCount: number }) {
+  const [cartOpen, setCartOpen] = useState(true);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const anchorRef = useRef(null);
+
+  useEffect(() => {
+    setAnchorEl(anchorRef.current);
+  }, []);
+
   return (
-    <AppBar position="static" color="transparent" elevation={0}>
-      <Toolbar
-        disableGutters
-        sx={{
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          borderBottom: '2px solid var(--clr-grey-100)',
-          px: { xs: '1rem', sm: 0 },
-        }}
+    <>
+      <AppBar
+        position="static"
+        color="transparent"
+        elevation={0}
+        ref={anchorRef}
       >
-        <Box
+        <Toolbar
+          disableGutters
           sx={{
-            display: 'flex',
-            alignItems: { xs: 'flex-end', md: 'center' },
-            gap: { xs: '1rem', md: '3rem' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            borderBottom: '2px solid var(--clr-grey-100)',
+            px: { xs: '1rem', sm: 0 },
           }}
         >
-          <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            sx={{
-              p: 0,
-              color: 'black',
-              display: { xs: 'block', md: 'none' },
-            }}
-          >
-            <img src="/images/icon-menu.svg" alt="" />
-          </IconButton>
-
-          <Box sx={{ flexShrink: 0 }}>
-            <img src={logo} alt="" />
-          </Box>
-          {/*Big screen menu */}
           <Box
             sx={{
-              flexGrow: 1,
-              display: { xs: 'none', md: 'flex' },
-              alignItems: 'baseline',
+              display: 'flex',
+              alignItems: { xs: 'flex-end', md: 'center' },
+              gap: { xs: '1rem', md: '3rem' },
             }}
-            component="nav"
           >
-            {pages.map((page) => (
-              <Button
-                key={page}
-                disableFocusRipple
-                disableRipple
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              sx={{
+                p: 0,
+                color: 'black',
+                display: { xs: 'block', md: 'none' },
+              }}
+            >
+              <img src="/images/icon-menu.svg" alt="" />
+            </IconButton>
+            <Box sx={{ flexShrink: 0 }}>
+              <img src={logo} alt="" />
+            </Box>
+            {/*Big screen menu */}
+            <Box
+              sx={{
+                flexGrow: 1,
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'baseline',
+              }}
+              component="nav"
+            >
+              {pages.map((page) => (
+                <Button
+                  key={page}
+                  disableFocusRipple
+                  disableRipple
+                  sx={{
+                    mb: 0,
+                    pt: 5,
+                    pb: 4,
+                    fontSize: '15px',
+                    display: 'block',
+                    color: 'var(--clr-grey-500)',
+                    borderBottom: '3px solid transparent',
+                    '&:focus': {
+                      color: 'var(----clr-grey-950)',
+                      borderBottom: '3px solid var(--clr-orange-500)',
+                      borderRadius: 0,
+                      borderWidth: '80%',
+                    },
+                  }}
+                >
+                  {page}
+                </Button>
+              ))}
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              flexGrow: 0,
+              display: 'flex',
+              flexWrap: 'nowrap',
+              gap: { xs: '24px', md: '48px' },
+            }}
+          >
+            <IconButton
+              size="large"
+              aria-label="show 4 new mails"
+              color="inherit"
+              onClick={() => setCartOpen(!cartOpen)}
+            >
+              <Badge
+                badgeContent={itemsCount}
+                color="primary"
+                anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                 sx={{
-                  mb: 0,
-                  pt: 5,
-                  pb: 4,
-                  fontSize: '15px',
-                  display: 'block',
-                  color: 'var(--clr-grey-500)',
-                  borderBottom: '3px solid transparent',
-                  '&:focus': {
-                    color: 'var(----clr-grey-950)',
-                    borderBottom: '3px solid var(--clr-orange-500)',
-                    borderRadius: 0,
-                    borderWidth: '80%',
+                  '& span': {
+                    fontSize: '10px',
+                    backgroundColor: 'var(--clr-orange-500)',
+                    px: '10px',
+                    py: 0,
                   },
                 }}
               >
-                {page}
-              </Button>
-            ))}
-          </Box>
-        </Box>
-
-        <Box
-          sx={{
-            flexGrow: 0,
-            display: 'flex',
-            flexWrap: 'nowrap',
-            gap: { xs: '24px', md: '48px' },
-          }}
-        >
-          <IconButton
-            size="large"
-            aria-label="show 4 new mails"
-            color="inherit"
-          >
-            <Badge
-              badgeContent={itemsCount}
-              color="primary"
-              anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+                <img src="/images/icon-cart.svg" alt="" />
+              </Badge>
+            </IconButton>
+            <IconButton
               sx={{
-                '& span': {
-                  fontSize: '10px',
-                  backgroundColor: 'var(--clr-orange-500)',
-                  px: '10px',
-                  py: 0,
-                },
+                p: 0,
+                '&:focus': { outline: 'solid var(--clr-orange-500)' },
               }}
             >
-              <img src="/images/icon-cart.svg" alt="" />
-            </Badge>
-          </IconButton>
+              <Avatar
+                alt="Remy Sharp"
+                src="/images/image-avatar.png"
+                sx={{
+                  width: '50px',
+                  height: '50px',
+                }}
+              />
+            </IconButton>
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-          <IconButton
-            sx={{ p: 0, '&:focus': { outline: 'solid var(--clr-orange-500)' } }}
+      <Popper open={cartOpen} anchorEl={anchorEl} placement="bottom">
+        <ClickAwayListener onClickAway={() => setCartOpen(false)}>
+          <Box
+            sx={{
+              width: '95vw',
+              height: '200px',
+              background: ' white',
+              transform: 'translateY(10px)',
+            }}
           >
-            <Avatar
-              alt="Remy Sharp"
-              src="/images/image-avatar.png"
-              sx={{
-                width: '50px',
-                height: '50px',
-              }}
-            />
-          </IconButton>
-        </Box>
-      </Toolbar>
-    </AppBar>
+            CART
+          </Box>
+        </ClickAwayListener>
+      </Popper>
+    </>
   );
 }
 export default Header;

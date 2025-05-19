@@ -21,6 +21,7 @@ const Main = ({
         display: { md: 'grid' },
         placeItems: { md: 'center' },
         flexGrow: 1,
+        isolation: 'isolate',
       }}
     >
       <Grid container spacing={{ xs: 3, sm: 6, md: '128px' }}>
