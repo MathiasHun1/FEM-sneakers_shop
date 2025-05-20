@@ -29,7 +29,7 @@ function App() {
             flexDirection: { md: 'column' },
           }}
         >
-          <Header itemsCount={itemsCount} />
+          <Header itemsCount={itemsCount} setItemsCount={setItemsCount} />
           <Main setItemsCount={setItemsCount} />
         </Box>
       </Container>

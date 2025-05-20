@@ -70,7 +70,10 @@ const ControlButtons = ({
 
       <Grid size={{ xs: 12, sm: 6, md: 8 }}>
         <Button
-          onClick={() => setItemsCount((prev) => prev + count)}
+          onClick={() => {
+            setItemsCount((prev) => prev + count);
+            setCount(0);
+          }}
           variant="contained"
           startIcon={<ShoppingCartIcon />}
           disableElevation

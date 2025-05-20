@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, type SetStateAction } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -6,20 +6,33 @@ import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
-import Popper from '@mui/material/Popper';
-import { ClickAwayListener } from '@mui/material';
+import ResponsiveCart from './ResponsiveCart';
 
 import logo from '/images/logo.svg';
 
 const pages = ['Collections', 'Men', 'Women', 'About', 'Contant'];
 
-function Header({ itemsCount }: { itemsCount: number }) {
-  const [cartOpen, setCartOpen] = useState(true);
-  const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-  const anchorRef = useRef(null);
+type AnchorObject = {
+  header: HTMLDivElement | null;
+  icon: HTMLDivElement | null;
+};
+
+type Props = {
+  itemsCount: number;
+  setItemsCount: React.Dispatch<SetStateAction<number>>;
+};
+
+function Header({ itemsCount, setItemsCount }: Props) {
+  const [cartOpen, setCartOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<AnchorObject | null>(null);
+  const anchorRefHeader = useRef(null);
+  const anchorRefIcon = useRef(null);
 
   useEffect(() => {
-    setAnchorEl(anchorRef.current);
+    setAnchorEl({
+      header: anchorRefHeader.current,
+      icon: anchorRefIcon.current,
+    });
   }, []);
 
   return (
@@ -28,7 +41,7 @@ function Header({ itemsCount }: { itemsCount: number }) {
         position="static"
         color="transparent"
         elevation={0}
-        ref={anchorRef}
+        ref={anchorRefHeader}
       >
         <Toolbar
           disableGutters
@@ -110,6 +123,7 @@ function Header({ itemsCount }: { itemsCount: number }) {
               aria-label="show 4 new mails"
               color="inherit"
               onClick={() => setCartOpen(!cartOpen)}
+              ref={anchorRefIcon}
             >
               <Badge
                 badgeContent={itemsCount}
@@ -137,8 +151,8 @@ function Header({ itemsCount }: { itemsCount: number }) {
                 alt="Remy Sharp"
                 src="/images/image-avatar.png"
                 sx={{
-                  width: '50px',
-                  height: '50px',
+                  width: { xs: '36px', sm: '50px' },
+                  height: { xs: '36px', sm: '50px' },
                 }}
               />
             </IconButton>
@@ -146,20 +160,13 @@ function Header({ itemsCount }: { itemsCount: number }) {
         </Toolbar>
       </AppBar>
 
-      <Popper open={cartOpen} anchorEl={anchorEl} placement="bottom">
-        <ClickAwayListener onClickAway={() => setCartOpen(false)}>
-          <Box
-            sx={{
-              width: '95vw',
-              height: '200px',
-              background: ' white',
-              transform: 'translateY(10px)',
-            }}
-          >
-            CART
-          </Box>
-        </ClickAwayListener>
-      </Popper>
+      <ResponsiveCart
+        anchorEl={anchorEl}
+        cartOpen={cartOpen}
+        setCartOpen={setCartOpen}
+        itemsCount={itemsCount}
+        setItemsCount={setItemsCount}
+      />
     </>
   );
 }
